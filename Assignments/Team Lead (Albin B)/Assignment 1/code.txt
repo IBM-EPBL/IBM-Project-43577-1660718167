@@ -1,0 +1,44 @@
+int temppin=A2;//Temperature pin
+float temp=0;
+int Buzz=5; //Buzzer pin
+int i=0;
+int PIR= 2;
+int val= 0;
+void setup() {
+// put your setup code here, to run once:
+  
+Serial.begin(9600);
+pinMode(Buzz,OUTPUT);
+  pinMode(PIR, INPUT);
+  pinMode(temppin,INPUT);
+  analogWrite (Buzz,0);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+temp=analogRead(temppin);
+temp=temp*0.48828125;
+  Serial.print("Temperature=");
+  Serial.println(temp);
+  val = digitalRead(PIR); // The value read from PIR pin 3 will be assigned to 'val'
+if(val == HIGH){
+  digitalWrite(Buzz, HIGH); // Turn Buzzer ON
+  Serial.println("Movement Detected"); // Print this text in Serial Monitor
+}
+else 
+{
+  digitalWrite(Buzz, LOW);
+  Serial.println("Movement not Detected");
+}
+
+if (temp>60)
+{
+  for(i=0;i<=254;i++)
+  {
+analogWrite(Buzz,i);
+  }
+  i=255;
+}
+else
+{analogWrite (Buzz,0);}
+}
